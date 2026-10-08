@@ -16,11 +16,11 @@ CARD_WIDTH = 750
 CARD_HEIGHT = 1050
 
 # Pure white background for printing on natural/cream cardstock
-# CREAM_PAPER = (255, 255, 255)
-# INK_BLACK = (0, 0, 0)
+CREAM_PAPER = (255, 255, 255)
+INK_BLACK = (0, 0, 0)
 
-CREAM_PAPER = (248, 245, 234)
-INK_BLACK = (11, 24, 34)
+# CREAM_PAPER = (248, 245, 234)
+# INK_BLACK = (11, 24, 34)
 
 DUMMY_IMG = Image.new("RGB", (1, 1))
 DUMMY_DRAW = ImageDraw.Draw(DUMMY_IMG)
