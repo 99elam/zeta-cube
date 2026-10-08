@@ -1,0 +1,29 @@
+# Python virtual environments & bytecode
+__pycache__/
+*.py[cod]
+.venv/
+env/
+venv/
+
+# Local cache & uncropped raw downloads
+images/*
+!images/.gitkeep
+
+# Rendered outputs (reproducible from scripts)
+playtest_cards/*
+!playtest_cards/.gitkeep
+*.pdf
+
+# Temporary files & OS caches
+*.tmp
+*.txt
+!requirements.txt
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Explicitly track cropped assets and empty directory placeholders
+!images_cropped/*
+!images/.gitkeep
+!playtest_cards/.gitkeep
