@@ -1,9 +1,11 @@
 import glob
+import math
 import os
 from PIL import Image, ImageDraw
 
 PLAYTEST_DIR = "./playtest_cards"
-OUTPUT_PDF = "playtest_cube_print_slips.pdf"
+PDF_DIR = "./pdf"
+OUTPUT_PDF_PATTERN = "playtest_cube_print_slips_part{}.pdf"
 
 PAGE_WIDTH = 2550
 PAGE_HEIGHT = 3300
@@ -15,6 +17,8 @@ LEFT_MARGIN = (PAGE_WIDTH - (3 * CARD_PRINT_WIDTH)) // 2   # 240 px
 TOP_MARGIN = (PAGE_HEIGHT - (3 * CARD_PRINT_HEIGHT)) // 2   # 165 px
 
 BASIC_LAND_COPIES = 30  # Adjust between 30 and 35
+NUM_PARTS = 3
+JPEG_QUALITY = 87  # Keeps each part ~40-45MB (cleanly below GitHub's 50MB warning and 100MB hard limit)
 
 
 def draw_crop_marks(draw: ImageDraw.ImageDraw):
@@ -78,9 +82,36 @@ def create_print_pdf():
         draw_crop_marks(draw)
         pages.append(page)
 
-    if pages:
-        pages[0].save(OUTPUT_PDF, save_all=True, append_images=pages[1:], resolution=300.0, quality=95)
-        print(f"Successfully generated '{OUTPUT_PDF}' ({len(pages)} pages).")
+    if not pages:
+        return
+
+    os.makedirs(PDF_DIR, exist_ok=True)
+    total_pages = len(pages)
+    pages_per_part = math.ceil(total_pages / NUM_PARTS)
+
+    print(f"Total pages: {total_pages}. Splitting into {NUM_PARTS} parts (~{pages_per_part} pages each)...\n")
+
+    for part_idx in range(NUM_PARTS):
+        start_p = part_idx * pages_per_part
+        end_p = min(start_p + pages_per_part, total_pages)
+        part_pages = pages[start_p:end_p]
+
+        if not part_pages:
+            continue
+
+        out_path = os.path.join(PDF_DIR, OUTPUT_PDF_PATTERN.format(part_idx + 1))
+        print(f"Saving Part {part_idx + 1}/{NUM_PARTS} ({len(part_pages)} pages, sheets {start_p + 1}-{end_p}) to '{out_path}'...")
+        part_pages[0].save(
+            out_path,
+            save_all=True,
+            append_images=part_pages[1:],
+            resolution=300.0,
+            quality=JPEG_QUALITY,
+        )
+        file_size_mb = os.path.getsize(out_path) / (1024 * 1024)
+        print(f"-> Created '{out_path}' ({file_size_mb:.1f} MB)")
+
+    print(f"\nDone! All {NUM_PARTS} PDF files saved in '{PDF_DIR}/'.")
 
 
 if __name__ == "__main__":

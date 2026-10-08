@@ -12,7 +12,11 @@ images/*
 # Rendered outputs (reproducible from scripts)
 playtest_cards/*
 !playtest_cards/.gitkeep
+<<<<<<< HEAD
 *.pdf
+=======
+playtest_cube_print_slips.pdf
+>>>>>>> b7575d3 (add card pdfs)
 
 # Temporary files & OS caches
 *.tmp

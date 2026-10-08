@@ -24,6 +24,7 @@ Cards feature an analog aesthetic: typewriter/newsprint serif and sans-serif typ
 ## Repository Structure
 
 ```text
+├── pdf/                         # Compiled 300 DPI print-ready PDF slips (split into 3 parts)
 ├── images/                      # Uncropped raw source art (local cache)
 ├── images_cropped/              # Active cropped art used during generation
 ├── playtest_cards/              # Generated 750x1050 px print PNGs
@@ -35,7 +36,7 @@ Cards feature an analog aesthetic: typewriter/newsprint serif and sans-serif typ
 ├── build_pdf.py                 # 9-card PDF sheet layout compiler
 ├── batch_shrink_crops.py        # Asset downsampling and palette optimizer
 ├── requirements.txt             # Python dependencies
-└── .gitignore                   # Excludes raw images, PDFs, and build buffers
+└── .gitignore                   # Excludes raw images, caches, and build buffers
 ```
 
 ---
@@ -110,10 +111,11 @@ To assemble the print queue into cut-ready sheets:
 ```bash
 python build_pdf.py
 ```
-- Outputs `playtest_cube_print_slips.pdf` formatted for 8.5" × 11" paper at 300 DPI.
+- Outputs 3 multi-page PDFs in `./pdf/` (`playtest_cube_print_slips_part1.pdf`, `part2.pdf`, `part3.pdf`) formatted for 8.5" × 11" paper at 300 DPI.
+- Split evenly into 3 parts (~26 sheets each, ~45–47 MB per file) to stay cleanly under GitHub's 50 MB recommendation and 100 MB file limit.
 - Places 9 cards per sheet (3×3 grid, each card scaled to 690×990 px / 2.3" × 3.3" to slide inside card sleeves over bulk cards).
 - Renders fine corner and edge crop marks along every margin.
-- Automatically appends 30 copies of each basic land (Plains, Island, Swamp, Mountain, Forest) to the back of the print queue .
+- Automatically appends 30 copies of each basic land (Plains, Island, Swamp, Mountain, Forest) to the back of the print queue in Part 3.
 
 ---
 
